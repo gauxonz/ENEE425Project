@@ -10,12 +10,12 @@ ws = 2*pi*Fstop/Fs;
 [bl,al]=cheby1(N,Rp,Wn);
 RawWaveFilt_L=filter(bl,al,PureWave);
 FFTWave_L=fft(RawWaveFilt_L,length(PureWave));
-FFTWave_L_Mag=abs(FFTWave_L(1:length(PureWave)/2));
+FFTWave_L_Mag=abs(FFTWave_L(1:ceil(length(PureWave)/2)));
 
 [bh,ah]=cheby1(N,Rp,Wn,'high');
 RawWaveFilt_H=filter(bh,ah,PureWave);
 FFTWave_H=fft(RawWaveFilt_H,length(PureWave));
-FFTWave_H_Mag=abs(FFTWave_H(1:length(PureWave)/2));
+FFTWave_H_Mag=abs(FFTWave_H(1:ceil(length(PureWave)/2)));
 
 m=max(abs(FFTWave_L_Mag));n=max(abs(FFTWave_H_Mag));
 o=find(m==FFTWave_L_Mag);p=find(n==FFTWave_H_Mag);
