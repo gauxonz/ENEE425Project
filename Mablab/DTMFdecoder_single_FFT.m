@@ -22,6 +22,7 @@ o=find(m==FFTWave_L_Mag);p=find(n==FFTWave_H_Mag);
 j=((o-1)*Fs)/length(PureWave);
 k=((p-1)*Fs)/length(PureWave);
 
+ResultCode = '';
 if j<=732.59 & k<=1270.91;
     ResultCode = '1';
    elseif j<=732.59 & k<=1404.73;
@@ -53,6 +54,6 @@ if j<=732.59 & k<=1270.91;
    elseif j>895.40 & k<=1553.04;  
     ResultCode = '#';  
    elseif j>895.40 & k>1553.05;  
-    ResultCode = 'D';  
+    ResultCode = 'D'; 
 end
 end
