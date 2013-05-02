@@ -1,10 +1,25 @@
-function result = DTMFdecoder(WaveFile)
+function result = DTMFdecoder(WaveFile,Method)
 %read file
 [RawWave,Fs]=wavread(WaveFile);
 
+% Prefileter
+f1=700;f3=1700;%?????????
+fsl=620;fsh=1800;%?????????
+rp=0.1;rs=30;%?????DB???????DB?
+wp1=2*pi*f1/Fs;
+wp3=2*pi*f3/Fs;
+wsl=2*pi*fsl/Fs;
+wsh=2*pi*fsh/Fs;
+wp=[wp1 wp3];
+ws=[wsl wsh];
+[n,wn]=cheb1ord(ws/pi,wp/pi,rp,rs);
+[bz1,az1]=cheby1(n,rp,wp/pi);
+FiltedWave=filter(bz1,az1,RawWave);
+FiltedWave(1:100)=0;
+
 %position signal
 HalfSampleLength=512;
-EffPosition = WaveSpliter(RawWave);
+EffPosition = WaveSpliter(FiltedWave);
 a=size(EffPosition);
 
 %set figure position
@@ -25,11 +40,17 @@ ylabel('Amplitude');grid;
 for i=1:a(1)
     %decode single 
     MidSig = ceil((EffPosition(i,1)+EffPosition(i,2))/2);
-    result(i) = DTMFdecoder_single(RawWave...
+    if strcmp(Method,'FFT')
+        result(i) = DTMFdecoder_single_FFT(FiltedWave...
         (MidSig-HalfSampleLength:MidSig+HalfSampleLength),Fs);
-    
+    elseif strcmp(Method,'Filter')
+        result(i) = DTMFdecoder_single_Filter(FiltedWave...
+        (MidSig-HalfSampleLength:MidSig+HalfSampleLength),Fs);
+    else
+        diplay('ERROR: invalid method!');
+    end
     %do fft and draw
-    FFTWave=abs(fft(RawWave...
+    FFTWave=abs(fft(FiltedWave...
         (MidSig-HalfSampleLength:MidSig+HalfSampleLength),2*HalfSampleLength));
     subplot(2,a(1),a(1)+i)
     plot(Fs/length(FFTWave).*(1:length(FFTWave)/2),FFTWave(1:length(FFTWave)/2));
@@ -38,3 +59,4 @@ for i=1:a(1)
 end
 
 disp( ['The code is ' result]) 
+end

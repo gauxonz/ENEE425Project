@@ -1,4 +1,4 @@
-function ResultCode = DTMFdecoder_single(PureWave,Fs)
+function ResultCode = DTMFdecoder_single_FFT(PureWave,Fs)
 Rp=0.5;
 As=25;
 Fpass = 1000;
@@ -54,4 +54,5 @@ if j<=732.59 & k<=1270.91;
     ResultCode = '#';  
    elseif j>895.40 & k>1553.05;  
     ResultCode = 'D';  
+end
 end
