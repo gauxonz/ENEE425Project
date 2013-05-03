@@ -3,9 +3,9 @@ function result = DTMFdecoder(WaveFile,Method)
 [RawWave,Fs]=wavread(WaveFile);
 
 % Prefileter
-f1=700;f3=1700;%?????????
-fsl=620;fsh=1800;%?????????
-rp=0.1;rs=30;%?????DB???????DB?
+f1=700;f3=1700;
+fsl=620;fsh=1800;
+rp=0.1;rs=30;
 wp1=2*pi*f1/Fs;
 wp3=2*pi*f3/Fs;
 wsl=2*pi*fsl/Fs;
@@ -18,7 +18,7 @@ FiltedWave=filter(bz1,az1,RawWave);
 FiltedWave(1:100)=0;
 
 %position signal
-HalfSampleLength=512;
+HalfSampleLength=1024;
 EffPosition = WaveSpliter(FiltedWave);
 a=size(EffPosition);
 
@@ -41,11 +41,11 @@ for i=1:a(1)
     %decode single 
     MidSig = ceil((EffPosition(i,1)+EffPosition(i,2))/2);
     if strcmp(Method,'FFT')
-        result(i) = DTMFdecoder_single_FFT(FiltedWave...
-        (MidSig-HalfSampleLength:MidSig+HalfSampleLength),Fs);
+        result(i) = DTMFdecoder_single_FFT(...
+            FiltedWave(MidSig-HalfSampleLength:MidSig+HalfSampleLength),Fs);
     elseif strcmp(Method,'Filter')
-        result(i) = DTMFdecoder_single_Filter(FiltedWave...
-        (MidSig-HalfSampleLength:MidSig+HalfSampleLength),Fs);
+        result(i) = DTMFdecoder_single_Filter(...
+            FiltedWave(MidSig-HalfSampleLength:MidSig+HalfSampleLength),Fs);
     else
         diplay('ERROR: invalid method!');
     end
