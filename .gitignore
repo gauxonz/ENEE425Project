@@ -1,2 +1,4 @@
 *.wav
 *.m~
+.DS_Store
+[Tt]emp*
