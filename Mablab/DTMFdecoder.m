@@ -40,18 +40,21 @@ ylabel('Amplitude');grid;
 for i=1:a(1)
     %decode single 
     MidSig = ceil((EffPosition(i,1)+EffPosition(i,2))/2);
+    SigBegin = MidSig-ceil((EffPosition(i,2)-EffPosition(i,1))*3/10);
+    SigEnd = MidSig+ceil((EffPosition(i,2)-EffPosition(i,1))*3/10);
+
     if strcmp(Method,'FFT')
         result(i) = DTMFdecoder_single_FFT(...
-            FiltedWave(MidSig-HalfSampleLength:MidSig+HalfSampleLength),Fs);
+            FiltedWave(SigBegin:SigEnd),Fs);
     elseif strcmp(Method,'Filter')
         result(i) = DTMFdecoder_single_Filter(...
-            FiltedWave(MidSig-HalfSampleLength:MidSig+HalfSampleLength),Fs);
+            FiltedWave(SigBegin:SigEnd),Fs);
     else
         diplay('ERROR: invalid method!');
     end
     %do fft and draw
     FFTWave=abs(fft(FiltedWave...
-        (MidSig-HalfSampleLength:MidSig+HalfSampleLength),2*HalfSampleLength));
+        (SigBegin:SigEnd),2*HalfSampleLength));
     subplot(2,a(1),a(1)+i)
     plot(Fs/length(FFTWave).*(1:length(FFTWave)/2),FFTWave(1:length(FFTWave)/2));
     title('FFT');xlabel('Continue Freq');
