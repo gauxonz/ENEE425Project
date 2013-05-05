@@ -22,6 +22,8 @@ HalfSampleLength=1024;
 EffPosition = WaveSpliter(FiltedWave);
 a=size(EffPosition);
 
+figure(1);
+
 %set figure position
 set(gcf,'Position',[0 20 1200 500]);
 set(gca,'Position',[0 0 1 1]);
@@ -36,6 +38,7 @@ subplot(2,a(1),1:a(1))
 plot(RawWave);
 title('DTMF Raw Input');xlabel('Time');
 ylabel('Amplitude');grid;
+
 
 for i=1:a(1)
     %decode single 
