@@ -4,4 +4,5 @@
 *.log
 *.aux
 *.gz
+*-eps-converted-to.pdf
 [Tt]emp*

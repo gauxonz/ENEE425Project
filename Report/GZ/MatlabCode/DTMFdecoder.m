@@ -65,7 +65,8 @@ for i=1:a(1)
     FFTWave=abs(fft(FiltedWave...
        (SigBegin:SigEnd),2*HalfSampleLength));    
     subplot(2,a(1),a(1)+i)
-    plot(Fs/length(FFTWave)/2.*(1:length(FFTWave)/2),FFTWave(1:length(FFTWave)/2));
+    plot(Fs/length(FFTWave)/2.*(1:length(FFTWave)/2)...
+        ,FFTWave(1:length(FFTWave)/2));
     title('FFT');xlabel('Continue Freq');
     ylabel('Amplitude');grid;
     end
