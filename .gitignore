@@ -1,4 +1,7 @@
 *.wav
 *.m~
-.DS_Store
+*.DS_Store
+*.log
+*.aux
+*.gz
 [Tt]emp*
